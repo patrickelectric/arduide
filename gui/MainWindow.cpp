@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
 
@@ -37,8 +37,8 @@ This program is free software; you can redistribute it and/or modify
 #include <QWebSecurityOrigin>
 #include <QDebug>
 #include <QDesktopServices>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 
 #include "EditorFactory.h"
 #include "LexerArduino.h"
@@ -339,7 +339,7 @@ void MainWindow::tabContentHasChanged()
     ui.action_Prev->setEnabled(previousAvail);
     ui.action_Next->setEnabled(forwardAvail);
     ui.action_Contextual_help->setEnabled(contextualHelpAvail);
-    
+
 }
 
 void MainWindow::editorModificationChanged(bool m)

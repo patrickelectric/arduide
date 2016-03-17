@@ -28,7 +28,7 @@
 #define QXTSIGNALWAITER_H
 #include <qxtglobal.h>
 
-#include <QObject>
+#include <QtCore/QObject>
 #include <QEventLoop>
 
 class QxtSignalWaiterPrivate;

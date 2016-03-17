@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QAbstractScrollArea>
 #include <QByteArray>
 #include <QMap>
-#include <QString>
+#include <QtCore/QString>
 #include <QSharedPointer>
 // #include "Types.h"
 // #include "ByteStream.h"

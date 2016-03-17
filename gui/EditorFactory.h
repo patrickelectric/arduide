@@ -29,7 +29,7 @@ This program is free software; you can redistribute it and/or modify
 #ifndef EDITORFACTORY_H
 #define EDITORFACTORY_H
 
-#include <QString>
+#include <QtCore/QString>
 
 #include "Editor.h"
 

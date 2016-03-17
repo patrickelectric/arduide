@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Martin Peres
 	    Denis Martinez
 
@@ -29,13 +29,13 @@ This program is free software; you can redistribute it and/or modify
 #ifndef PROJECTHISTORY_H
 #define PROJECTHISTORY_H
 
-#include <QString>
-#include <QStringList>
-#include <QSettings>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QSettings>
 
 /**
  * @brief Class to mage old projects
- * 
+ *
  */
 class ProjectHistory : public QObject
 {
@@ -44,24 +44,24 @@ class ProjectHistory : public QObject
 public:
     /**
      * @brief Return a number of projects
-     * 
-     * @param maxSize Maximun number of projects 
+     *
+     * @param maxSize Maximun number of projects
      * @return QStringList
      */
     QStringList history(int maxSize=0);
 
 private:
     ProjectHistory(QObject *parent = NULL);
-    
+
     /**
      * @brief Project settings
-     * 
+     *
      */
     QSettings settings;
-    
+
     /**
      * @brief History size
-     * 
+     *
      */
     const int historyLength;
 
@@ -70,18 +70,18 @@ private:
 signals:
     /**
      * @brief Update history with new project
-     * 
+     *
      * @param newProject New project name
      * @return void
      */
-    
+
     void historyUpdated(const QString &newProject);
 
 public slots:
-    
+
     /**
      * @brief Update project history
-     * 
+     *
      * @param newProject New project name
      * @return void
      */

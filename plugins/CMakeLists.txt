@@ -27,9 +27,9 @@ foreach(PLUGIN ${PLUGINS})
   set(plugin_MOC_SOURCES "")
   set(plugin_QRC_SOURCES "")
 
-  qt4_wrap_ui(plugin_UI_SOURCES ${plugin_UIS})
-  qt4_wrap_cpp(plugin_MOC_SOURCES ${plugin_MOCS})
-  qt4_add_resources(plugin_QRC_SOURCES ${plugin_QRCS})
+  qt5_wrap_ui(plugin_UI_SOURCES ${plugin_UIS})
+  qt5_wrap_cpp(plugin_MOC_SOURCES ${plugin_MOCS})
+  qt5_add_resources(plugin_QRC_SOURCES ${plugin_QRCS})
 
   add_library(${PLUGIN} MODULE
     ${plugins_SOURCES}

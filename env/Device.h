@@ -29,7 +29,7 @@ This program is free software; you can redistribute it and/or modify
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include <QString>
+#include <QtCore/QString>
 #include <QList>
 
 class Device;

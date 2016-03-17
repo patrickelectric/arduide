@@ -28,7 +28,7 @@ This program is free software; you can redistribute it and/or modify
 
 #include "Toolkit.h"
 
-#include <QStringList>
+#include <QtCore/QStringList>
 #include <QDir>
 #include <QFile>
 #include <QProcess>

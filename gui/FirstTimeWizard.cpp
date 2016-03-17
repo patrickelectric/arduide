@@ -34,7 +34,7 @@ This program is free software; you can redistribute it and/or modify
 #include <QDir>
 #include <QMessageBox>
 #include <QDesktopServices>
-#include <QNetworkReply>
+#include <QtNetwork/QNetworkReply>
 #include <QNetworkDiskCache>
 #include <QTemporaryFile>
 #include <QtConcurrentRun>

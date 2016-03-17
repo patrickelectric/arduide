@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
 
@@ -29,8 +29,8 @@ This program is free software; you can redistribute it and/or modify
 #ifndef PAGERENDERER_H
 #define PAGERENDERER_H
 
-#include <QUrl>
-#include <QString>
+#include <QtCore/QUrl>
+#include <QtCore/QString>
 #include <QVariantHash>
 
 class PageRenderer

@@ -26,7 +26,7 @@
 #define QXTTEMPORARYDIR_H
 
 #include <qxtglobal.h>
-#include <QString>
+#include <QtCore/QString>
 #include <QDir>
 
 class QxtTemporaryDirPrivate;

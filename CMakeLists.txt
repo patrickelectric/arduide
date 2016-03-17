@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.9)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 include(CheckIncludeFileCXX)
 
@@ -110,38 +113,48 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 # Qt
-set(Qt4_COMPONENTS QtCore QtGui QtNetwork QtWebkit)
-if(USE_DBUS)
-  set(Qt4_COMPONENTS ${Qt4_COMPONENTS} QtDbus)
-endif()
-include(FindQt4)
-find_package(Qt4 COMPONENTS ${Qt4_COMPONENTS} REQUIRED)
-include(${QT_USE_FILE})
-
-set(Qt4_LINK_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTWEBKIT_LIBRARY})
+set(Qt5_LINK_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTWEBKIT_LIBRARY})
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  set(Qt4_LINK_LIBRARIES ${Qt4_LINK_LIBRARIES} ${QT_QTDBUS_LIBRARY})
+  set(Qt5_LINK_LIBRARIES ${Qt5_LINK_LIBRARIES} ${QT_QTDBUS_LIBRARY})
 endif()
+
+find_package(Qt5Widgets)
+find_package(Qt5Network)
+find_package(Qt5LinguistTools)
+find_package(webkitwidgets)
+find_package(Qt5Core)
+add_definitions(-fPIC)
+
+#set(Qt5_COMPONENTS Qt5Network Qt5Webkit)
+if(USE_DBUS)
+  set(Qt5_COMPONENTS Qt5Dbus)
+endif()
+#include(FindQt5)
+#include(${QT_USE_FILE})
 
 # Grantlee
-if(Grantlee_HOME_DIR)
+if(Grantlee5_HOME_DIR)
   # this variable can be set manually as the path to GrantleeConfig.cmake
-  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${Grantlee_HOME_DIR})
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${Grantlee5_HOME_DIR})
 endif()
-find_package(Grantlee REQUIRED)
-include(${Grantlee_USE_FILE})
+find_package(Grantlee5 REQUIRED)
+#include(${Grantlee5_USE_FILE})
 if(USE_FHS_PATHS)
-  add_definitions(-DGRANTLEE_PLUGIN_DIR="${Grantlee_PLUGIN_PATH}")
+  add_definitions(-DGRANTLEE5_PLUGIN_DIR="${Grantlee5_PLUGIN_PATH}")
 else()
   # grantlee plugins reside in the application directory
-  add_definitions(-DGRANTLEE_PLUGIN_DIR=".")
+  add_definitions(-DGRANTLEE5_PLUGIN_DIR=".")
 endif()
+
+if(Qt5Widgets_FOUND)
+    set(QScintilla_LIBRARY ${Qt5Widgets_INCLUDE_DIRS})
+endif(Qt5Widgets_FOUND)
 
 # QScintilla
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  find_library(QScintilla_LIBRARY NAMES libqscintilla2.a qscintilla2.lib HINTS ${QT_LIBRARY_DIR})
+  find_library(QScintilla_LIBRARY NAMES libqscintilla2-qt5.a qscintilla2-qt5.lib HINTS ${QT5_LIBRARY_DIR})
 else()
-  find_library(QScintilla_LIBRARY qscintilla2 HINTS ${QT_LIBRARY_DIR})
+  find_library(QScintilla_LIBRARY qscintilla2-qt5 HINTS ${QT5_LIBRARY_DIR})
 endif()
 
 # Resources
@@ -159,12 +172,24 @@ endif()
 if(QScintilla_LIBRARY)
   message(STATUS "QScintilla library: ${QScintilla_LIBRARY}")
   get_filename_component(QScintilla_LIBRARY_PATH "${QScintilla_LIBRARY}" PATH)
-  find_path(QScintilla_INCLUDE_PATH Qsci/qsciscintilla.h HINTS ${QT_INCLUDE_DIR})
+  set(QScintilla_INCLUDE_PATH ${QScintilla_LIBRARY})
+
+  FOREACH(TOP_INCLUDE_PATH ${Qt5Widgets_INCLUDE_DIRS} ${FRAMEWORK_INCLUDE_DIR})
+    FIND_PATH(QScintilla_INCLUDE_PATH qsciglobal.h ${TOP_INCLUDE_PATH}/Qsci)
+    message("check if QScintilla includes: ${TOP_INCLUDE_PATH}")
+    IF(QScintilla_INCLUDE_PATH)
+      set(QScintilla_INCLUDE_PATH ${TOP_INCLUDE_PATH})
+      message("potato")
+      BREAK()
+    ENDIF()
+  ENDFOREACH()
+
+  find_path(QScintilla_INCLUDE_PATH Qsci/qsciscintilla.h HINTS ${QT5_INCLUDE_DIR})
   if(EXISTS "${QScintilla_INCLUDE_PATH}/Qsci/qsciscintilla.h")
     include_directories("${QScintilla_INCLUDE_PATH}")
     message(STATUS "QScintilla includes: ${QScintilla_INCLUDE_PATH}")
   else()
-    message(SEND_ERROR "QScintilla headers not found.")
+    message(SEND_ERROR "QScintilla headers not found. ${QScintilla_INCLUDE_PATH}")
   endif()
 else()
   message(SEND_ERROR "QScintilla library not found.")
@@ -201,7 +226,7 @@ file(GLOB utils_MOCS
   "utils/qxt/*.h"
   "utils/hexview/*.h")
 
-qt4_wrap_cpp(utils_MOC_SOURCES ${utils_MOCS})
+qt5_wrap_cpp(utils_MOC_SOURCES ${utils_MOCS})
 
 # Build
 file(GLOB arduino_SOURCES
@@ -235,9 +260,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   set(arduino_QRCS ${arduino_QRCS} "resources/windows.qrc")
 endif()
 
-qt4_wrap_ui(arduino_UI_SOURCES ${arduino_UIS})
-qt4_wrap_cpp(arduino_MOC_SOURCES ${arduino_MOCS})
-qt4_add_resources(arduino_QRC_SOURCES ${arduino_QRCS})
+qt5_wrap_ui(arduino_UI_SOURCES ${arduino_UIS})
+qt5_wrap_cpp(arduino_MOC_SOURCES ${arduino_MOCS})
+qt5_add_resources(arduino_QRC_SOURCES ${arduino_QRCS})
 
 if (UPDATE_TRANSLATIONS)
   set (FILES_TO_TRANSLATE ${arduino_SOURCES}
@@ -248,13 +273,13 @@ if (UPDATE_TRANSLATIONS)
   ${utils_OS_SOURCES}
   ${utils_MOC_SOURCES}
   ${rc_SOURCES})
-  qt4_create_translation(arduino_QM ${FILES_TO_TRANSLATE} ${arduino_TS})
+  qt5_create_translation(arduino_QM ${FILES_TO_TRANSLATE} ${arduino_TS})
 else (UPDATE_TRANSLATIONS)
-  qt4_add_translation(arduino_QM ${arduino_TS})
+  qt5_add_translation(arduino_QM ${arduino_TS})
 endif (UPDATE_TRANSLATIONS)
 add_custom_target (translations_target DEPENDS ${arduino_QM})
 
-set(arduino_LINK_LIBRARIES ${Qt4_LINK_LIBRARIES} ${Grantlee_CORE_LIBRARIES} ${QScintilla_LIBRARY} ${CoreFoundation_LIBRARY} ${IOKit_LIBRARY} ${Win32_LIBRARIES} ${UDEV_LIBRARIES})
+set(arduino_LINK_LIBRARIES ${Qt5_LINK_LIBRARIES} ${Grantlee5_CORE_LIBRARIES} ${QScintilla_LIBRARY} ${CoreFoundation_LIBRARY} ${IOKit_LIBRARY} ${Win32_LIBRARIES} ${UDEV_LIBRARIES})
 
 add_executable(arduino-ide
   ${GUI_TYPE}

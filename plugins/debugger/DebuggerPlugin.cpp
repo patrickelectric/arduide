@@ -191,7 +191,7 @@ void DebuggerPlugin::treeItemClicked(QTreeWidgetItem* item, int column)
 }
 
 #include "data/libraries/IDEdbg/IDEdbgConstants.h"
-#include <QStringList>
+#include <QtCore/QStringList>
 #include <QMessageBox>
 void DebuggerPlugin::sendCommand(QString cmd)
 {

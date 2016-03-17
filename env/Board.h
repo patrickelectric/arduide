@@ -29,8 +29,8 @@ This program is free software; you can redistribute it and/or modify
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <QString>
-#include <QStringList>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QHash>
 #include <QMap>
 
