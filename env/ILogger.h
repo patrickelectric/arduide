@@ -29,7 +29,7 @@ This program is free software; you can redistribute it and/or modify
 #ifndef ILOGGER_H
 #define ILOGGER_H
 
-//#include <QtCore/QString>
+#include <QString>
 
 class ILogger
 {

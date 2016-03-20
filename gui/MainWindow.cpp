@@ -33,12 +33,22 @@ This program is free software; you can redistribute it and/or modify
 #include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QCloseEvent>
-#include <QWebSecurityOrigin>
+#include <QAction>
+#include <QtWebKit/QWebSecurityOrigin>
 #include <QDebug>
+#include <QUrl>
+#include <QUrlQuery>
+#include <QCloseEvent>
 #include <QDesktopServices>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
+#include <QtWebEngine/qtwebengineglobal.h>
+#include <QtWebEngineWidgets/QtWebEngineWidgets>
+#include <QtWebEngine/QtWebEngine>
+#include <QtWebEngineWidgets/QWebEngineView>
+#include <QtWebKitWidgets/qwebpage.h>
+#include <QtWidgets/QWidget>
+#include <QtWidgets>
 
 #include "EditorFactory.h"
 #include "LexerArduino.h"
@@ -649,12 +659,12 @@ void MainWindow::uploadToPastebin()
         request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
 
         QByteArray data;
-        QUrl params;
+        QUrlQuery params;
         params.addQueryItem("paste_name",QFileInfo(e->fileName()).fileName());
         params.addQueryItem("paste_code",e->text());
         params.addQueryItem("paste_private", "1");
         params.addQueryItem("paste_format","cpp");
-        data.append(params.encodedQuery());
+        data.append(params.query());
 
         pastebin.post(request,data);
     }

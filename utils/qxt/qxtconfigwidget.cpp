@@ -141,8 +141,8 @@ void QxtConfigWidgetPrivate::relayout()
         splitter->setOrientation(Qt::Vertical);
         table->setRowCount(1);
         table->setColumnCount(0);
-        table->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-        table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
+        table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     }
@@ -151,8 +151,8 @@ void QxtConfigWidgetPrivate::relayout()
         splitter->setOrientation(Qt::Horizontal);
         table->setRowCount(0);
         table->setColumnCount(1);
-        table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-        table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+        table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         table->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     }

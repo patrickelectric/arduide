@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
 
@@ -29,14 +29,18 @@ This program is free software; you can redistribute it and/or modify
 #ifndef BROWSER_H
 #define BROWSER_H
 
-#include <QWebView>
+#include <QtWebEngineWidgets/QtWebEngineWidgets>
+#include <QtWebEngine/QtWebEngine>
 #include <QVariant>
+#include <QtWebKitWidgets/qwebpage.h>
+#include <QtWebKitWidgets/QWebView>
+#include <QtWidgets/qwidget.h>
 
 class Browser : public QWebView
 {
     Q_OBJECT
 public:
-    Browser(QWidget *parent = NULL);
+    Browser(QWebView *parent = NULL);
 
     void quickstart();
     void openDocumentation(const QString &fileName = QString());

@@ -1,7 +1,6 @@
 set(PLUGINS "serial" "debugger")
 
-file(GLOB plugins_SOURCES
-  "*.h" "*.cpp")
+file(GLOB plugins_SOURCES "*.cpp")
 list(APPEND arduino_SOURCES ${plugins_SOURCES})
 set(arduino_SOURCES ${arduino_SOURCES} PARENT_SCOPE)
 
@@ -14,9 +13,6 @@ foreach(PLUGIN ${PLUGINS})
 
   file(GLOB plugin_UIS
     "${PLUGIN}/*.ui")
-
-  file(GLOB plugin_MOCS
-    "${PLUGIN}/*.h")
 
   file(GLOB plugin_QRCS
     "${PLUGIN}/*.qrc")

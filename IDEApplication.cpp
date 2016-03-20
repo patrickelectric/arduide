@@ -3,10 +3,10 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
-  Copyright (C) 2011 
+  Copyright (C) 2011
 	    Laurent Navet (translation support)
 
 This program is free software; you can redistribute it and/or modify
@@ -81,9 +81,9 @@ IDEApplication::IDEApplication(int& argc, char **argv)
 void IDEApplication::initializeTemplates()
 {
     mEngine = new Grantlee::Engine(this);
-    mEngine->setPluginPaths(QStringList() << QDir(GRANTLEE_PLUGIN_DIR).absolutePath());
+    mEngine->setPluginPaths(QStringList() << QDir(GRANTLEE5_PLUGIN_DIR).absolutePath());
 
-    Grantlee::FileSystemTemplateLoader::Ptr loader = Grantlee::FileSystemTemplateLoader::Ptr(new Grantlee::FileSystemTemplateLoader);
+    QSharedPointer<Grantlee::FileSystemTemplateLoader> loader = QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
     loader->setTemplateDirs(QStringList() << ":/templates");
     mEngine->addTemplateLoader(loader);
 }

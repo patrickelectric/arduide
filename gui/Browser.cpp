@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
 
@@ -34,19 +34,22 @@ This program is free software; you can redistribute it and/or modify
 #include <QDir>
 #include <QDesktopServices>
 #include <QMessageBox>
-#include <QWebFrame>
-#include <QWebHistory>
+//#include <QWebFrame>
+//#include <QWebHistory>
+#include <QtWebKit/QWebSettings>
+#include <QtWebKitWidgets/QWebPage>
+#include <QtWebKitWidgets/QWebFrame>
 #include <QStatusBar>
 #include <QDebug>
 
-#include <grantlee_core.h>
+#include <grantlee_templates.h>
 
 #include "IDEApplication.h"
 #include "PageRenderer.h"
 #include "env/Toolkit.h"
 #include "env/ProjectHistory.h"
 
-Browser::Browser(QWidget *parent)
+Browser::Browser(QWebView *parent)
     : QWebView(parent), history_curr(0)
 {
 #ifndef QT_NO_DEBUG

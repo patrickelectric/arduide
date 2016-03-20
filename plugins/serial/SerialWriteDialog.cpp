@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
 
@@ -129,7 +129,7 @@ void SerialWriteDialog::writeBytes()
         setStatus(tr("Invalid hex value"));
         return;
     }
-    emit writeRequested(QByteArray::fromHex(hex.toAscii()));
+    emit writeRequested(QByteArray::fromHex(hex.toLatin1()));
 }
 
 void SerialWriteDialog::writeString()

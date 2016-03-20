@@ -34,7 +34,7 @@
 
 #include <QtWidgets/QApplication>
 #include <QtCore/QTranslator>
-//#include <grantlee_core.h>
+#include <grantlee_templates.h>
 
 #include "gui/MainWindow.h"
 #include "gui/FirstTimeWizard.h"

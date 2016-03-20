@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
 
@@ -35,9 +35,9 @@ This program is free software; you can redistribute it and/or modify
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QtNetwork/QNetworkReply>
-#include <QNetworkDiskCache>
+#include <QtNetwork/QNetworkDiskCache>
 #include <QTemporaryFile>
-#include <QtConcurrentRun>
+#include <QtConcurrent/QtConcurrentRun>
 #include <QFutureWatcher>
 #include <QProcess>
 #include <qxtsignalwaiter.h>
@@ -72,7 +72,7 @@ FirstTimeWizard::FirstTimeWizard(QWidget *parent)
             << QDir(applicationPath).filePath("arduino-" ARDUINO_SDK_VERSION)
             << QDir(applicationPath).filePath("arduino");
 #else
-    QString applicationPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    QString applicationPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
 
     defaultArduinoPaths
         << QDir(applicationPath).filePath("arduino-" ARDUINO_SDK_VERSION_NAME)
@@ -146,7 +146,7 @@ FirstTimeWizard::FirstTimeWizard(QWidget *parent)
 
     mDownloadManager = new QNetworkAccessManager(this);
     QNetworkDiskCache *downloadCache = new QNetworkDiskCache(mDownloadManager);
-    downloadCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+    downloadCache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation));
     mDownloadManager->setCache(downloadCache);
 
     setupActions();
@@ -251,7 +251,7 @@ bool FirstTimeWizard::validateCurrentPage()
         // extract the archive
         QTemporaryFile archive("arduino");
         bool extractSuccess = archive.open();
-        QString destinationPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        QString destinationPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
         QDir destinationDir(destinationPath);
         if (! destinationDir.exists())
             extractSuccess = extractSuccess && destinationDir.mkpath(".");
