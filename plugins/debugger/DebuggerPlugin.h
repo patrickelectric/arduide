@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Martin Peres
 	    Denis Martinez
 
@@ -43,6 +43,8 @@ class QTreeWidgetItem;
 class DebuggerPlugin : public QObject, public IDEPluginInterface
 {
     Q_OBJECT
+    //Q_EXPORT_PLUGIN2(debugger, DebuggerPlugin)
+    Q_PLUGIN_METADATA(IID "debugger")
     Q_INTERFACES(IDEPluginInterface)
 
 public:

@@ -3,7 +3,7 @@
 
   This file is part of arduide, The Qt-based IDE for the open-source Arduino electronics prototyping platform.
 
-  Copyright (C) 2010-2016 
+  Copyright (C) 2010-2016
   Authors : Denis Martinez
 	    Martin Peres
 
@@ -40,6 +40,8 @@ class SerialWidget;
 class SerialPlugin : public QObject, public IDEPluginInterface
 {
     Q_OBJECT
+    //Q_EXPORT_PLUGIN2(serial, SerialPlugin)
+    Q_PLUGIN_METADATA(IID "serial")
     Q_INTERFACES(IDEPluginInterface)
 
 public:

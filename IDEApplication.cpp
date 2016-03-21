@@ -118,19 +118,23 @@ void IDEApplication::initializePlugins()
     bool ok;
     foreach(const QString &entry, pluginDir.entryList(QDir::Files, QDir::Name))
     {
-        fileName = pluginDir.filePath(entry);
-        mPluginLoader->setFileName(fileName);
-        ok = mPluginLoader->load();
-        qDebug() << "Loading" << entry << "result:" << ok;
+        if((entry.split('.')).size() > 1)
+            if((entry.split('.')[1] == "so") || (entry.split('.')[1] == "dll") || (entry.split('.')[1] == "dylib") )
+            {
+                fileName = pluginDir.filePath(entry);
+                mPluginLoader->setFileName(fileName);
+                ok = mPluginLoader->load();
+                qDebug() << "Loading" << entry << "result:" << ok;
 
-        if (ok)
-        {
-            IDEPluginInterface *plugin = dynamic_cast<IDEPluginInterface *>(mPluginLoader->instance());
-            ok = plugin != NULL && plugin->setup(this);
-            qDebug() << "Initializing" << entry << "result:" << ok;
-        }
-        else
-            qDebug() << mPluginLoader->errorString();
+                if (ok)
+                {
+                    IDEPluginInterface *plugin = dynamic_cast<IDEPluginInterface *>(mPluginLoader->instance());
+                    ok = plugin != NULL && plugin->setup(this);
+                    qDebug() << "Initializing" << entry << "result:" << ok;
+                }
+                else
+                    qDebug() << mPluginLoader->errorString();
+            }
     }
 }
 

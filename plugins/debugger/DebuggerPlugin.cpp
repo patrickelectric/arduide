@@ -588,6 +588,3 @@ void DebuggerPlugin::parseError(QString error)
 
     widget->logError(tr(">>> %2").arg(error));
 }
-
-//Q_EXPORT_PLUGIN2(debugger, DebuggerPlugin)
-Q_PLUGIN_METADATA(DebuggerPlugin)
