@@ -134,11 +134,12 @@ QString Board::attribute(const QString &attr) const
         return *it;
 }
 
-void Board::setSelectedBoard(QString _name, QString _mcu, QString _freq)
+void Board::setSelectedBoard(QString _name, QString _mcu, QString _freq, QString _arch)
 {
     name_ = _name;
     mcu_  = _mcu;
     freq_ = _freq;
+    arch_ = _arch;
 }
 
 QString Board::selectedName() const

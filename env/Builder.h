@@ -81,6 +81,13 @@ public:
     const QString freq() const;
 
     /**
+     * @brief Return the arch of mcu
+     *
+     * @return const QString
+     */
+    const QString arch() const;
+
+    /**
      * @brief Return the upload speed of the board mcu
      *
      * @return const QString

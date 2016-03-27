@@ -65,9 +65,9 @@ void BoardChooser::refresh()
                 if(freqs.size() == 1)
                 {
                     action = new QAction(cpu, actionGroup);
-                    action->setData(boardId+","+cpu);
+                    action->setData(boardId+","+cpu+","+freqs[0]);
                     action->setCheckable(true);
-                    if(boardId+","+cpu == defaultBoard)
+                    if(boardId+","+cpu+","+freqs[0] == defaultBoard)
                         action->setChecked(true);
                     menu1->addAction(action);
                 }
@@ -94,9 +94,9 @@ void BoardChooser::refresh()
         else
         {
             action = new QAction(board->name(), actionGroup);
-            action->setData(boardId);
+            action->setData(boardId+","+cpus[0]+","+freqs[0]);
             action->setCheckable(true);
-            if (boardId == defaultBoard)
+            if (boardId+","+cpus[0]+","+freqs[0] == defaultBoard)
                 action->setChecked(true);
             addAction(action);
         }

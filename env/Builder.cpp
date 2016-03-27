@@ -50,7 +50,7 @@ Builder::Builder(QObject *parent)
 
 const Board *Builder::board() const
 {
-    Board::mBoards[name()].setSelectedBoard(name(), mcu(), freq());
+    Board::mBoards[name()].setSelectedBoard(name(), mcu(), freq(), arch());
 
     if(name()=="" or mcu() =="")
         return NULL;
@@ -81,6 +81,14 @@ const QString Builder::freq() const
         return ideApp->settings()->board().split(",")[2];
 
     return Board::mBoards[name()].mAttributes["build.f_cpu"];
+}
+
+const QString Builder::arch() const
+{
+    if(mcu.contains("cortex"))
+        return "arm";
+    else
+        return "avr";
 }
 
 const QString Builder::uploadSpeed() const
