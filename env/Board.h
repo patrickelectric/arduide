@@ -103,7 +103,7 @@ public:
      * @param freq freq of selected mcu
      * @return void
      */
-    void setSelectedBoard(QString _name, QString _mcu, QString _freq);
+    void setSelectedBoard(QString _name, QString _mcu, QString _freq, QString _arch);
 
     /**
      * @brief Return selected board name
@@ -127,12 +127,19 @@ public:
      */
     QString selectedFreq() const;
 
+    /**
+     * @brief Return selected arch of mcu
+     *
+     * @return QString
+     */
+    QString selectedArch() const;
+
 private:
     /**
      * @brief Useful info to identify the selected board
      *
      */
-    QString name_,mcu_,freq_;
+    QString name_,mcu_,freq_,arch_;
 
     /**
     * @brief Function that read boards.txt to identify all compatible boards

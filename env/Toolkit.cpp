@@ -95,7 +95,10 @@ QStringList Toolkit::boardsFileNames()
 {
     QStringList userHwList;
     if(toolkitVersionInt(ideApp->settings()->arduinoPath()) >= 160)
+    {
         userHwList << QDir(hardwarePath()).filePath("arduino/avr/boards.txt");
+        userHwList << QDir(hardwarePath()).filePath("arduino/sam/boards.txt");
+    }
     else
         userHwList << QDir(hardwarePath()).filePath("arduino/boards.txt");
 

@@ -155,3 +155,8 @@ QString Board::selectedFreq() const
 {
     return freq_;
 }
+
+QString Board::selectedArch() const
+{
+    return arch_;
+}

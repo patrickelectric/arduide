@@ -60,6 +60,7 @@ void BoardChooser::refresh()
             QMenu *menu1 = new QMenu;
             foreach(const QString &cpu, cpus)
             {
+                qDebug() << "CPU" << cpu;
                 menu1->setTitle(board->name());
                 if(freqs.size() == 1)
                 {
@@ -75,6 +76,7 @@ void BoardChooser::refresh()
                     QMenu *menu2 = new QMenu;
                     foreach(const QString &freq, freqs)
                     {
+                        qDebug() << "FREQ" << freq;
                         QAction *action2 = new QAction(QString::number(freq.left(freq.lastIndexOf("0")+1).toInt()/1e6)+"MHz", actionGroup);
                         action2->setData(boardId+","+cpu+","+freq);
                         action2->setCheckable(true);
