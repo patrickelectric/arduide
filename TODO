@@ -1,4 +1,5 @@
 General:
+ * change << arg << arg to Qstring.arg(.,.,.,.)
  * Test upload process with all boards
  * Put UTF-8
  * have a configuration dialog (Qxt provides a nice one)

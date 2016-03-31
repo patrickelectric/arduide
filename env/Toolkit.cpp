@@ -171,6 +171,13 @@ QString Toolkit::avrPath()
 #endif
 }
 
+QString Toolkit::samPath()
+{
+    if(toolkitVersionInt(ideApp->settings()->arduinoPath()) >= 160)
+        return QDir(hardwarePath()).filePath("/hardware/tools");
+    return QString();
+}
+
 QString Toolkit::avrTool(Toolkit::AVRTool tool)
 {
     QString path = avrPath();
@@ -199,6 +206,38 @@ QString Toolkit::avrTool(Toolkit::AVRTool tool)
     QString toolPath = QDir(path).filePath(toolName);
     if (QFile::exists(toolPath))
 	return toolPath;
+    else
+        return toolName;
+}
+
+QString Toolkit::samTool(Toolkit::SAMTool tool)
+{
+    QString path = samPath();
+    QString toolName;
+    switch (tool)
+    {
+    case SamGcc:
+        toolName = "arm-none-eabi-gcc";
+        break;
+    case SamGxx:
+        toolName = "arm-none-eabi-gcc";
+        break;
+    case SamAr:
+        toolName = "arm-none-eabi-ar";
+        break;
+    case SamObjcopy:
+        toolName = "arm-none-eabi-objcopy";
+        break;
+    case SamSize:
+        toolName = "arm-none-eabi-size";
+        break;
+    default:
+        return QString();
+    }
+
+    QString toolPath = QDir(path).filePath(toolName);
+    if (QFile::exists(toolPath))
+    return toolPath;
     else
         return toolName;
 }
@@ -237,6 +276,35 @@ QStringList Toolkit::avrCFlags(const Board *board)
     QString arduinoPinDirPath = QDir(hardwarePath()).filePath(arduinoPinDirName);
     if (QDir(arduinoPinDirPath).exists())
         cflags << QString("-I%0").arg(arduinoPinDirPath);
+
+    return cflags;
+}
+
+QStringList Toolkit::samCFlags(const Board *board)
+{
+    /*-c -Wall --param max-inline-insns-single=500 -mcpu=cortex-m3 -mthumb -mlong-calls
+  -ffunction-sections -fdata-sections -nostdlib -std=c99 -Os  -I[...]/due/include
+  -I[...]/due/sam -I[...]/due/sam/libsam -I[...]/due/sam/CMSIS/CMSIS/Include*/
+    // we need to read platform.txt
+    // -mcpu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {compiler.libsam.c.flags} {includes} "{source_file}" -o "{object_file}"
+    QStringList cflags;
+    cflags
+    /*
+        << "-g"
+        << "-Os"
+        << "-Wall"
+        << "-fno-exceptions"
+        << "-ffunction-sections"
+        << "-fdata-sections"
+        */
+        << "-c -g -Os -w -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -Dprintf=iprintf -MMD"
+        << QString("-mcpu=%0").arg(board->selectedMcu())
+        << QString("-DF_CPU=%0").arg(board->selectedFreq())
+        << QString("-DARDUINO=%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath()))
+        //-DARDUINO_ARCH_{build.arch} {compiler.libsam.c.flags} {includes} "{source_file}" -o "{object_file}"
+        << QString("-I%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath())+QString("/sam/system")+QString("/libsam"))
+        << QString("-I%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath())+QString("/sam/system")+QString("/CMSIS/CMSIS/Include/"))
+        << QString("-I%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath())+QString("/sam/system")+QString("/CMSIS/Device/ATMEL/"));
 
     return cflags;
 }

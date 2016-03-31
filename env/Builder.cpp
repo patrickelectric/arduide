@@ -85,7 +85,7 @@ const QString Builder::freq() const
 
 const QString Builder::arch() const
 {
-    if(mcu.contains("cortex"))
+    if(mcu().contains("cortex"))
         return "arm";
     else
         return "avr";

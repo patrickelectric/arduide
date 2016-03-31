@@ -121,11 +121,18 @@ public:
     static bool isValidArduinoPath(const QString &path);
 
     /**
-     * @brief Check if path is a valid arduino path
+     * @brief Check if path is a valid arduino avr path
      *
      * @return QString
      */
     static QString avrPath();
+
+    /**
+     * @brief Check if path is a valid arduino sam path
+     *
+     * @return QString
+     */
+    static QString samPath();
 
     enum AVRTool
     {
@@ -134,6 +141,15 @@ public:
         AvrAr,
         AvrObjcopy,
         AvrSize
+    };
+
+    enum SAMTool
+    {
+        SamGcc,     //arm-none-eabi-gcc
+        SamGxx,
+        SamAr,      //arm-none-eabi-ar
+        SamObjcopy, //arm-none-eabi-objcopy
+        SamSize     //arm-none-eabi-size
     };
 
     /**
@@ -145,6 +161,14 @@ public:
     static QString avrTool(AVRTool tool);
 
     /**
+     * @brief Return the samtool.
+     *
+     * @param tool SAMtool
+     * @return QString
+     */
+    static QString samTool(SAMTool tool);
+
+    /**
      * @brief Return C flags of board
      *
      * @param board Board
@@ -153,12 +177,28 @@ public:
     static QStringList avrCFlags(const Board *board);
 
     /**
+     * @brief Return C flags of board
+     *
+     * @param board Board
+     * @return QStringList
+     */
+    static QStringList samCFlags(const Board *board);
+
+    /**
      * @brief Return c++ flags of board
      *
      * @param board Board
      * @return QStringList
      */
     static QStringList avrCxxFlags(const Board *board);
+
+    /**
+     * @brief Return c++ flags of board
+     *
+     * @param board Board
+     * @return QStringList
+     */
+    static QStringList samCxxFlags(const Board *board);
 
     /**
      * @brief Return S flags
@@ -183,6 +223,14 @@ public:
      * @return QStringList
      */
     static QStringList avrSizeFlags(const Board *board);
+
+    /**
+     * @brief Return avr-size flags
+     *
+     * @param board Board
+     * @return QStringList
+     */
+    static QStringList samSizeFlags(const Board *board);
 
     /**
      * @brief Return core path
