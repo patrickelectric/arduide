@@ -230,12 +230,30 @@ bool Builder::build(const QString &code, bool upload)
     mBuildDir.reset(new QxtTemporaryDir(QDir(QDir::tempPath()).filePath("arduino-build")));
     QString buildPath = mBuildDir->path();
 
-    QStringList cflags = Toolkit::avrCFlags(board());
-    QStringList cxxflags = Toolkit::avrCxxFlags(board());
-    QStringList sflags = Toolkit::avrSFlags(board());
-    QStringList ldflags = Toolkit::avrLdFlags(board());
-    QStringList sizeflags = Toolkit::avrSizeFlags(board());
+#warning TODO:need to improve this, with cFlags (board check arch inside function)
+    QStringList cflags;
+    QStringList cxxflags;
+    QStringList sflags;
+    QStringList ldflags;
+    QStringList sizeflags;
     QStringList includePaths;
+
+    if(arch()=="avr")
+    {
+        cflags = Toolkit::avrCFlags(board());
+        cxxflags = Toolkit::avrCxxFlags(board());
+        sflags = Toolkit::avrSFlags(board());
+        ldflags = Toolkit::avrLdFlags(board());
+        sizeflags = Toolkit::avrSizeFlags(board());
+    }
+    else
+    {
+        cflags = Toolkit::samCFlags(board());
+        cxxflags = Toolkit::samCxxFlags(board());
+        //sflags = Toolkit::samSFlags(board());
+        //ldflags = Toolkit::samLdFlags(board());
+        //sizeflags = Toolkit::samSizeFlags(board());
+    }
 
     // compile the core
     QStringList objects;
@@ -375,25 +393,40 @@ bool Builder::compile(QStringList &objects, const QStringList &sources, const QS
         SourceType sourceType = identifySource(source);
         QString objectFileName = QFileInfo(source).fileName() + ".o";
         objectFileName = QDir(outputDirectory.isNull() ? mBuildDir->path() : outputDirectory).filePath(objectFileName);
+
+        QString toolkit;
         switch (sourceType)
         {
         case CSource:
+            if(arch()=="avr")
+                toolkit = Toolkit::avrTool(Toolkit::AvrGcc);
+            else
+                toolkit = Toolkit::samTool(Toolkit::SamGcc);
+
             cmdline
-                << Toolkit::avrTool(Toolkit::AvrGcc) << "-c"
+                << toolkit << "-c"
                 << cflags << includeFlags
                 << "-o" << objectFileName << source;
+                qDebug() << "A" << cmdline;
             break;
         case CxxSource:
+            if(arch()=="avr")
+                toolkit = Toolkit::avrTool(Toolkit::AvrGxx);
+            else
+                toolkit = Toolkit::samTool(Toolkit::SamGxx);
+
             cmdline
-                << Toolkit::avrTool(Toolkit::AvrGxx) << "-c"
+                << toolkit << "-c"
                 << cxxflags << includeFlags
                 << "-o" << objectFileName << source;
+                qDebug() << "B" << cmdline;
             break;
         case SSource:
             cmdline
                 << Toolkit::avrTool(Toolkit::AvrGcc) << "-c"
                 << sflags << includeFlags
                 << "-o" << objectFileName << source;
+                qDebug() << "C" << cmdline;
             break;
         default:
             emit logError(tr("Unknown source type: %0").arg(QFileInfo(source).fileName()));

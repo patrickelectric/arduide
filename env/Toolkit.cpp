@@ -220,7 +220,7 @@ QString Toolkit::samTool(Toolkit::SAMTool tool)
         toolName = "arm-none-eabi-gcc";
         break;
     case SamGxx:
-        toolName = "arm-none-eabi-gcc";
+        toolName = "arm-none-eabi-g++";
         break;
     case SamAr:
         toolName = "arm-none-eabi-ar";
@@ -282,6 +282,7 @@ QStringList Toolkit::avrCFlags(const Board *board)
 
 QStringList Toolkit::samCFlags(const Board *board)
 {
+#warning TODO: create sam path
     /*-c -Wall --param max-inline-insns-single=500 -mcpu=cortex-m3 -mthumb -mlong-calls
   -ffunction-sections -fdata-sections -nostdlib -std=c99 -Os  -I[...]/due/include
   -I[...]/due/sam -I[...]/due/sam/libsam -I[...]/due/sam/CMSIS/CMSIS/Include*/
@@ -297,21 +298,30 @@ QStringList Toolkit::samCFlags(const Board *board)
         << "-ffunction-sections"
         << "-fdata-sections"
         */
-        << "-c -g -Os -w -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -Dprintf=iprintf -MMD"
+        << QString("-g -Os -w -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -mcpu=cortex-m3 -mthumb -mlong-calls -Dprintf=iprintf -MMD").split(" ")
         << QString("-mcpu=%0").arg(board->selectedMcu())
         << QString("-DF_CPU=%0").arg(board->selectedFreq())
         << QString("-DARDUINO=%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath()))
+        //-DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch}
         //-DARDUINO_ARCH_{build.arch} {compiler.libsam.c.flags} {includes} "{source_file}" -o "{object_file}"
-        << QString("-I%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath())+QString("/sam/system")+QString("/libsam"))
-        << QString("-I%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath())+QString("/sam/system")+QString("/CMSIS/CMSIS/Include/"))
-        << QString("-I%0").arg(toolkitVersionInt(ideApp->settings()->arduinoPath())+QString("/sam/system")+QString("/CMSIS/Device/ATMEL/"));
-
+        << board->attribute("build.extra_flags")
+        << QString("-I%0").arg(hardwarePath()+QString("/arduino/sam/variants/")+board->attribute("build.variant"))
+        << QString("-DARDUINO_%0 -DARDUINO_ARCH_%1").arg(board->attribute("build.board"),"SAM").split(" ")
+        << QString("-I%0").arg(hardwarePath()+QString("/arduino/sam/system")+QString("/libsam/"))
+        << QString("-I%0").arg(hardwarePath()+QString("/arduino/sam/system")+QString("/CMSIS/CMSIS/Include/"))
+        << QString("-I%0").arg(hardwarePath()+QString("/arduino/sam/system")+QString("/CMSIS/Device/ATMEL/"));
+    qDebug() << cflags<< "BATATAAAAAA";
     return cflags;
 }
 
 QStringList Toolkit::avrCxxFlags(const Board *board)
 {
     return avrCFlags(board);
+}
+
+QStringList Toolkit::samCxxFlags(const Board *board)
+{
+    return samCFlags(board);
 }
 
 QStringList Toolkit::avrSFlags(const Board *board)
