@@ -216,6 +216,14 @@ public:
      */
     static QStringList avrLdFlags(const Board *board);
 
+        /**
+     * @brief Return LD flags
+     *
+     * @param board Board
+     * @return QStringList
+     */
+    static QStringList samLdFlags(const Board *board);
+
     /**
      * @brief Return avr-size flags
      *

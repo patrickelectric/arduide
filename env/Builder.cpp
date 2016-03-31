@@ -251,7 +251,7 @@ bool Builder::build(const QString &code, bool upload)
         cflags = Toolkit::samCFlags(board());
         cxxflags = Toolkit::samCxxFlags(board());
         //sflags = Toolkit::samSFlags(board());
-        //ldflags = Toolkit::samLdFlags(board());
+        ldflags = Toolkit::samLdFlags(board());
         //sizeflags = Toolkit::samSizeFlags(board());
     }
 
@@ -463,9 +463,16 @@ Builder::SourceType Builder::identifySource(const QString &fileName)
 
 bool Builder::link(const QString &fileName, const QStringList &objects, const QStringList &ldflags)
 {
+    QString toolkit;
+    if(arch()=="avr")
+        toolkit = Toolkit::avrTool(Toolkit::AvrGcc);
+    else
+        toolkit = Toolkit::samTool(Toolkit::SamGcc);
+
+#warning TODO:miss something ?
     QStringList command;
     command
-        << Toolkit::avrTool(Toolkit::AvrGcc)
+        << toolkit
         << ldflags
         << "-o" << fileName
         << objects

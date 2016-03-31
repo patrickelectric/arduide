@@ -347,6 +347,19 @@ QStringList Toolkit::avrLdFlags(const Board *board)
     return ldflags;
 }
 
+QStringList Toolkit::samLdFlags(const Board *board)
+{
+    QStringList ldflags;
+    //recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} -mcpu={build.mcu} "-T{build.variant.path}/{build.ldscript}"
+    //-Wl,-Map,{build.path}/{build.project_name}.map" {compiler.c.elf.extra_flags} -o "{build.path}/{build.project_name}.elf" "-L{build.path}" -mthumb -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--entry=Reset_Handler -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,--warn-unresolved-symbols -Wl,--start-group "{build.path}/syscalls_sam3.c.o" {object_files} "{build.variant.path}/{build.variant_system_lib}" "{build.path}/{archive_file}" -Wl,--end-group -lm -gcc
+    ldflags
+        << QString("-Os -Wl,--gc-sections").split(" ")
+        << QString("-mcpu=%0").arg(board->selectedMcu())
+        << QString("-T%0").arg(hardwarePath()+QString("/arduino/sam/variants/")+board->attribute("build.variant")+"/"+board->attribute("build.ldscript"));
+        //<< QString("-Wl,-Map,%0.map).arg({build.path}/{build.project_name});
+    return ldflags;
+}
+
 QStringList Toolkit::avrSizeFlags(const Board *board)
 {
     QStringList sizeflags;
